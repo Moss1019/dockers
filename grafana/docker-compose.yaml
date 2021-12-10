@@ -1,0 +1,21 @@
+version: '2.2'
+services:
+  prometheus:
+    image: prometheus
+    container_name: prometheus
+    ports:
+      - 29090:9090
+    network_mode: "host"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - 23000:3000
+    network_mode: "host"
+
+networks:
+  prometheus:
+    driver: bridge

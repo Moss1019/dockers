@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: development-mysql
+  namespace: development-ns
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+
+  template:
+    metadata:
+      name: mysql
+      labels:
+        app: mysql
+
+    spec:
+      containers:
+      - image: mysql
+        name: mysql
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "secret123!"
+        - name: MYSQL_DATABASE
+          value: "my_db"
+        ports:
+        - containerPort: 3306
+          protocol: TCP

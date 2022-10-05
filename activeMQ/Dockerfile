@@ -25,4 +25,4 @@ RUN mv jdk /opt/jve/
 ENV JAVA_HOME="/opt/jve"
 ENV PATH="${PATH}:${JAVA_HOME}/bin"
 
-ENTRYPOINT ["bash"]
+ENTRYPOINT ["./activemq/bin/activemq", "console"]

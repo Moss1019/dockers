@@ -1,0 +1,8 @@
+version: '3.3'
+services:
+  activemq:
+    image: activemq
+    build: ./
+    container_name: activemq
+    ports:
+      - 8161:8161

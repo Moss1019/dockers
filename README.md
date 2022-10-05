@@ -8,5 +8,5 @@ External dependencies in docker containers to run them locally.
 4. prometheus and grafana for metrics and dashboards
 5. redis cache
 6. local docker registry
-
-
+7. ms sql server database
+8. activeMQ dockerfile

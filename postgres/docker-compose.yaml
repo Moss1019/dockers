@@ -1,0 +1,10 @@
+version: '3.3'
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    environment:
+      - 'POSTGRES_PASSWORD=secret123!'
+      - 'POSTGRES_DB=test_db'
+    ports:
+      - 5432:5432

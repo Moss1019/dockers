@@ -25,4 +25,10 @@ RUN mv jdk /opt/jve/
 ENV JAVA_HOME="/opt/jve"
 ENV PATH="${PATH}:${JAVA_HOME}/bin"
 
-ENTRYPOINT ["./activemq/bin/activemq", "console"]
+WORKDIR /var/activemq/activemq/conf
+
+RUN sed -i 's/127.0.0.1/0.0.0.0/g' jetty.xml
+
+WORKDIR /var/activemq/activemq/bin/
+
+ENTRYPOINT ["./activemq", "console"]

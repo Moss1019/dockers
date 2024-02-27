@@ -10,3 +10,5 @@ services:
       - /var/app/data/postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
+    volumes:
+      - /var/postgres/data:/var/lib/postgres/data

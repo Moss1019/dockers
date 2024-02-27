@@ -1,0 +1,24 @@
+version: '3.3'
+
+services:
+  db:
+    image: mariadb
+    restart: always
+    networks: 
+      - mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: secret123!
+    ports:
+      - 3306:3306
+
+  adminer:
+    image: adminer
+    restart: always
+    networks: 
+      - mariadb
+    ports:
+      - 8080:8080
+
+networks:
+  mariadb:
+    driver: bridge

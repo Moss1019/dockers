@@ -5,6 +5,8 @@ services:
     container_name: postgres
     environment:
       - 'POSTGRES_PASSWORD=secret123!'
-      - 'POSTGRES_DB=test_db'
+      - 'POSTGRES_DB=test_db'	
+    volumes:
+      - /var/app/data/postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432

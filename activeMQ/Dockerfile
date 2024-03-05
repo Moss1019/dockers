@@ -1,6 +1,6 @@
 FROM ubuntu
 
-RUN apt-get update -y
+RUN apt-get update
 RUN apt-get install curl python3 python3-pip libc6-i386 -y
 RUN pip3 install requests
 

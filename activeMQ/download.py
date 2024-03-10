@@ -3,7 +3,7 @@ import requests
 
 
 def main():
-    req = requests.get('https://www.apache.org/dyn/closer.cgi?filename=/activemq/5.17.2/apache-activemq-5.17.2-bin.tar.gz&action=download', stream=True)
+    req = requests.get('https://www.apache.org/dyn/closer.cgi?filename=/activemq/6.0.1/apache-activemq-6.0.1-bin.tar.gz&action=download', stream=True)
     f = open('./activemq.tar.gz', 'wb')
     total_copied = 0
     for chunk in req.iter_content(chunk_size=1024*1024):

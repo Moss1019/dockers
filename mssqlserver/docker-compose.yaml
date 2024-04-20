@@ -1,5 +1,3 @@
-version: "2.3"
-
 services:
   sqlserver:
     container_name: sqlserver
@@ -8,4 +6,4 @@ services:
     - 1433:1433
     environment:
     - "ACCEPT_EULA=Y"
-    - "SA_PASSWORD=password123!"
+    - "SA_PASSWORD=secret123!"

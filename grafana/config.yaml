@@ -7,11 +7,14 @@ alerting:
   - static_configs:
     - targets:
 
-rule_files:
-
 scrape_configs:
-  - job_name: 'spring-actuator'
-    metrics_path: '/actuator/prometheus'
+  - job_name: 'ccn-manager'
+    metrics_path: '/q/metrics'
     scrape_interval: 15s
     static_configs:
-    - targets: ['localhost:8080']
+    - targets: ['192.168.178.204:7100']
+  - job_name: 'logging'
+    metrics_path: 'q/metrics'
+    scrape_interval: 15s
+    static_configs:
+    - targets: ['192.168.178.204:6003']

@@ -1,11 +1,9 @@
-FROM ubuntu
+FROM ubuntu as downloader
 
 COPY download.py /var/activemq/download.py
 
 RUN apt-get update
-RUN apt-get install openjdk-11-jdk python3 python3-pip -y
-
-RUN export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+RUN apt-get install -y python3 python3-pip
 
 RUN pip3 install requests --break-system-packages
 
@@ -15,9 +13,13 @@ RUN python3 download.py
 RUN tar -xf activemq-ar.tar.gz
 RUN rm download.py activemq-ar.tar.gz
 RUN mv ./* activemq-ar
+
+FROM eclipse-temurin:19.0.2_7-jre-jammy
+
+COPY --from=downloader /var/activemq /var/activemq
+
 WORKDIR /var/activemq/activemq-ar/bin
 
-RUN ./artemis create mybroker --user=admin --password=admin --allow-anonymous --http-host 0.0.0.0 --relax-jolokia
-RUN /var/activemq/activemq-ar/bin/mybroker/bin/artemis-service start
+RUN ./artemis create artemis-broker --user=admin --password=admin --allow-anonymous --http-host 0.0.0.0 --relax-jolokia
 
-ENTRYPOINT ["/var/activemq/activemq-ar/bin/mybroker/bin/artemis", "run"]
+ENTRYPOINT ["/var/activemq/activemq-ar/bin/artemis-broker/bin/artemis", "run"]

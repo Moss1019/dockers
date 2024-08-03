@@ -1,4 +1,3 @@
-version: '3.3'
 services:
   postgres:
     image: postgres
@@ -7,8 +6,8 @@ services:
       - 'POSTGRES_PASSWORD=secret123!'
     ports:
       - 5432:5432
-    volumes:
-      - /var/data/postgres/data:/var/lib/postgres/data
+    # volumes:
+    #   - /var/data/postgres/data:/var/lib/postgres/data
     networks:
       - postgres
 

@@ -1,7 +1,6 @@
 services:
   db:
     image: mariadb
-    restart: always
     networks: 
       - mariadb
     environment:
@@ -11,7 +10,6 @@ services:
 
   adminer:
     image: adminer
-    restart: always
     networks: 
       - mariadb
     ports:

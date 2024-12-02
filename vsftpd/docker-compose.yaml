@@ -1,0 +1,24 @@
+services:
+  vsftpd:
+    image: vsftpd
+    container_name: vsftpd
+    ports:
+      - "21:21/tcp"
+      - "2222:22/tcp"
+      - "4559-4564:4559-4564/tcp"
+    networks:
+      - vsftpd
+    environment:
+      - PASV_PROMISCUOUS=false
+      - PASV_ADDRESS=127.0.0.1
+      - PASV_MIN_PORT=4559
+      - PASV_MAX_PORT=4564
+      - USESSL=false
+      - FORCESSL=false
+      - FTP_SERVER_NAME=My ftp data server
+    volumes:
+      - /var/log/vsftpd:/var/log/
+
+networks:
+  vsftpd:
+    driver: bridge

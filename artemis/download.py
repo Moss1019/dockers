@@ -2,7 +2,7 @@ import requests
 
 
 def main():
-    req = requests.get('https://www.apache.org/dyn/closer.cgi?filename=activemq/activemq-artemis/2.36.0/apache-artemis-2.36.0-bin.tar.gz&action=download', stream=True)
+    req = requests.get('https://www.apache.org/dyn/closer.cgi?filename=activemq/activemq-artemis/2.39.0/apache-artemis-2.39.0-bin.tar.gz&action=download', stream=True)
     f = open('./activemq-ar.tar.gz', 'wb')
     total_copied = 0
     for chunk in req.iter_content(chunk_size=1024*1024):

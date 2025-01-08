@@ -8,6 +8,8 @@ services:
       - 'bootstrap.memory_lock=true'
       - 'discovery.type=single-node'
       - 'ES_JAVA_OPTS=-Xms512m -Xmx512m'
+      - 'ELASTIC_PASSWORD=secret123!'
+      - 'xpack.security.enabled=true'
     ulimits:
       memlock:
         soft: -1
@@ -25,6 +27,8 @@ services:
     environment:
       - 'ELASTICSEARCH_URL=http://es:9200'
       - 'ELASTICSEARCH_HOSTS=["http://es:9200"]'
+      - 'ELASTICSEARCH_USERNAME=elastic'
+      - 'ELASTICSEARCH_PASSWORD=secret123!'
     networks:
       - elastic
     depends_on: 

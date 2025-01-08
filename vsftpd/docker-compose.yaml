@@ -21,4 +21,5 @@ services:
 
 networks:
   vsftpd:
+    name: vsftpd
     driver: bridge

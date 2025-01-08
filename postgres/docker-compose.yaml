@@ -24,4 +24,5 @@ services:
 
 networks:
   postgres:
+    name: postgres
     driver: bridge

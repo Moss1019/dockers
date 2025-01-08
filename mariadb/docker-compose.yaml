@@ -17,4 +17,5 @@ services:
 
 networks:
   mariadb:
+    name: mariadb
     driver: bridge

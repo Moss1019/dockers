@@ -4,3 +4,10 @@ services:
     container_name: registry
     ports:
       - 5000:5000
+    networks:
+      - registry
+
+networks:
+  registry:
+    name: registry
+    driver: bridge

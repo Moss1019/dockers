@@ -5,4 +5,11 @@ services:
     ports:
     - "8161:8161"
     - "61616:61616"
+    networks:
+    - artemis
+
+networks:
+  elastic:
+    name: artemis
+    driver: bridge
   

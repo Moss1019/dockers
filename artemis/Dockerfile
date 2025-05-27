@@ -1,17 +1,13 @@
 FROM ubuntu AS downloader
 
-COPY download.py /var/activemq/download.py
-
 RUN apt-get update
-RUN apt-get install -y python3 python3-pip
-
-RUN pip3 install requests --break-system-packages
+RUN apt-get install wget -y
 
 WORKDIR /var/activemq
 
-RUN python3 download.py
-RUN tar -xf activemq-ar.tar.gz
-RUN rm download.py activemq-ar.tar.gz
+RUN wget -O artemis.tar.gz https://dlcdn.apache.org/activemq/activemq-artemis/2.41.0/apache-artemis-2.41.0-bin.tar.gz
+RUN tar -xf artemis.tar.gz
+RUN rm artemis.tar.gz
 RUN mv ./* activemq-ar
 
 FROM eclipse-temurin:19.0.2_7-jre-jammy

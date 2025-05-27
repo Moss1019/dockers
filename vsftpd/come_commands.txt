@@ -1,0 +1,10 @@
+
+# open shell to container
+docker exec -ti vsftpd /bin/bash
+
+# create new user
+useradd -m -d /home/<username> <username>
+printf "password\npassword" | passwd <username>
+
+# log in as user with ftp
+ftp <username>@localhost -p

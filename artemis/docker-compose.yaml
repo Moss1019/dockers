@@ -9,7 +9,7 @@ services:
     - artemis
 
 networks:
-  elastic:
+  artemis:
     name: artemis
     driver: bridge
   

@@ -1,4 +1,4 @@
-FROM ubuntu as downloader
+FROM ubuntu AS downloader
 
 COPY download.py /var/activemq/download.py
 

@@ -1,7 +1,0 @@
-services:
-  redis:
-    image: redis
-    container_name: redis
-    command: redis-server --requirepass secret123!
-    ports:
-      - 6379:6379

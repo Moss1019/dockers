@@ -1,9 +1,15 @@
 services:
   activemq:
     image: activemq
-    build: ./
     container_name: activemq
     ports:
       - "61616:61616"
       - "8161:8161"
       - "5672:5672"
+    networks:
+    - activemq
+
+networks:
+  activemq:
+    name: activemq
+    driver: bridge

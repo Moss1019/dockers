@@ -5,6 +5,7 @@ services:
     ports:
     - "8161:8161"
     - "61616:61616"
+    - "5672:5672"
     networks:
     - artemis
 

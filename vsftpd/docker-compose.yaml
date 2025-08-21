@@ -3,7 +3,7 @@ services:
     image: vsftpd
     container_name: vsftpd
     ports:
-      - "21:21/tcp"
+      - "2121:21/tcp"
       - "2222:22/tcp"
       - "4559-4564:4559-4564/tcp"
     networks:

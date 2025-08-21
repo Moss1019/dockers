@@ -1,2 +1,4 @@
 kubernetes/kafka
 **/venv/
+
+**/container_key*

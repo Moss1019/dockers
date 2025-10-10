@@ -1,0 +1,19 @@
+services:
+  pgadmin:
+    image: pgadmin
+    container_name: pgadmin
+    environment:
+      - 'PGADMIN_DEFAULT_EMAIL: admin@admin.com'
+      - 'PGADMIN_DEFAULT_PASSWORD: secret123!'
+    ports:
+      - 5050:80
+    networks:
+      - pg-admin
+      - postgres
+
+networks:
+  pg-admin:
+    name: pg-admin
+    driver: bridge
+  postgres:
+    external: true

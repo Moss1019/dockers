@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: artemis-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: artemis
+  template:
+    metadata:
+      name: artemis
+      labels:
+        app: artemis
+      namespace: mosson
+    spec:
+      containers:
+        - name: artemis
+          image: 192.168.50.149:5000/artemis
+          # livenessProbe:
+          #   httpGet:
+          #     path: /console/jolokia
+          #     port: 8161
+          # readinessProbe:
+          #   tcpSocket:
+          #     port: 61616
+          ports:
+            - name: stomp
+              protocol: TCP
+              containerPort: 61616
+            - name: amqp
+              protocol: TCP
+              containerPort: 5672
+            - name: jolokia
+              protocol: TCP
+              containerPort: 8161

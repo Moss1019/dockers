@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: vsftpd-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vsftpd
+  template:
+    metadata:
+      name: vsftpd
+      labels:
+        app: vsftpd
+      namespace: mosson
+    spec:
+      containers:
+        - name: vsftpd
+          image: 192.168.50.149:5000/vsftpd
+          ports:
+            - name: ftp-transfer
+              protocol: TCP
+              containerPort: 20
+            - name: ftp
+              protocol: TCP
+              containerPort: 21
+            - name: sftp
+              protocol: TCP
+              containerPort: 22
+            - name: pasv-4559
+              protocol: TCP
+              containerPort: 4559
+            - name: pasv-4560
+              protocol: TCP
+              containerPort: 4560
+            - name: pasv-4561
+              protocol: TCP
+              containerPort: 4561
+            - name: pasv-4562
+              protocol: TCP
+              containerPort: 4562
+            - name: pasv-4563
+              protocol: TCP
+              containerPort: 4563
+            - name: pasv-4564
+              protocol: TCP
+              containerPort: 4564
+          env:
+            - name: PASV_PROMISCUOUS
+              value: 'false'
+            - name: PASV_ADDRESS
+              value: '127.0.0.1'
+            - name: PASV_MIN_PORT
+              value: '4559'
+            - name: PASV_MAX_PORT
+              value: '4564'
+            - name: USESSL
+              value: 'false'
+            - name: FORCESSL
+              value: 'false'
+            - name: FTP_SERVER_NAME
+              value: 'My ftp data server'

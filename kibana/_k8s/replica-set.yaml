@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: kibana-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      name: kibana
+      labels:
+        app: kibana
+      namespace: mosson
+    spec:
+      containers:
+        - name: kibana
+          image: 192.168.50.149:5000/kibana
+          ports:
+            - name: kibana
+              protocol: TCP
+              containerPort: 5601
+          env:
+          - name: ELASTICSEARCH_URL
+            value: "http://elasticsearch-svc:9200"
+          - name: ELASTICSEARCH_HOSTS
+            value: '["http://elasticsearch-svc:9200"]'
+          - name: ELASTICSEARCH_USERNAME
+            value: "elastic"
+          - name: ELASTICSEARCH_PASSWORD
+            value: "secret123!"

@@ -3,6 +3,7 @@ services:
     image: vsftpd
     container_name: vsftpd
     ports:
+      - "2020:20/tcp"
       - "2121:21/tcp"
       - "2222:22/tcp"
       - "4559-4564:4559-4564/tcp"
@@ -16,8 +17,6 @@ services:
       - USESSL=false
       - FORCESSL=false
       - FTP_SERVER_NAME=My ftp data server
-    volumes:
-      - /var/log/vsftpd:/var/log/
 
 networks:
   vsftpd:

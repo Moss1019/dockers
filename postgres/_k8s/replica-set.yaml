@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: postgres-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      name: postgres
+      labels:
+        app: postgres
+      namespace: mosson
+    spec:
+      containers:
+        - name: postgres
+          image: 192.168.50.149:5000/postgres
+          ports:
+            - name: postgres
+              protocol: TCP
+              containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              value: 'secret123!'

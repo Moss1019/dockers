@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: elasticsearch-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      name: elasticsearch
+      labels:
+        app: elasticsearch
+      namespace: mosson
+    spec:
+      containers:
+        - name: elasticsearch
+          image: 192.168.50.149:5000/elasticsearch
+          ports:
+            - name: elastic
+              protocol: TCP
+              containerPort: 9200
+          env:
+          - name: node.name
+            value: "es"
+          - name: cluster.name
+            value: "es-docker-cluster"
+          - name: bootstrap.memory_lock
+            value: "true"
+          - name: discovery.type
+            value: "single-node"
+          - name: ES_JAVA_OPTS
+            value: "-Xms512m -Xmx1024m"
+          - name: ELASTIC_PASSWORD
+            value: "secret123!"
+          - name: xpack.security.enabled
+            value: "true"

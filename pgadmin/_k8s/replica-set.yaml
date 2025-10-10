@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: pgadmin-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin
+  template:
+    metadata:
+      name: pgadmin
+      labels:
+        app: pgadmin
+      namespace: mosson
+    spec:
+      containers:
+        - name: pgadmin
+          image: 192.168.50.149:5000/pgadmin
+          ports:
+            - name: pgadmin
+              protocol: TCP
+              containerPort: 5050
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: 'admin@admin.com'
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: 'secret123!'

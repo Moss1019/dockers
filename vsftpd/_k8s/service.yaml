@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vsftpd-svc
+  namespace: mosson
+spec:
+  type: ClusterIP
+  selector:
+    app: vsftpd
+  ports:
+    - name: ftp-transfer
+      protocol: TCP
+      port: 20
+      targetPort: 20
+    - name: ftp
+      protocol: TCP
+      port: 21
+      targetPort: 21
+    - name: sftp
+      protocol: TCP
+      port: 22
+      targetPort: 22
+    - name: pasv-4559
+      protocol: TCP
+      port: 4559
+      targetPort: 4559
+    - name: pasv-4560
+      protocol: TCP
+      port: 4560
+      targetPort: 4560
+    - name: pasv-4561
+      protocol: TCP
+      port: 4561
+      targetPort: 4561
+    - name: pasv-4562
+      protocol: TCP
+      port: 4562
+      targetPort: 4562
+    - name: pasv-4563
+      protocol: TCP
+      port: 4563
+      targetPort: 4563
+    - name: pasv-4564
+      protocol: TCP
+      port: 4564
+      targetPort: 4564

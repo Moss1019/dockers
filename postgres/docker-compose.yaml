@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:17.5-alpine3.22
+    image: postgres
     container_name: postgres
     environment:
       - 'POSTGRES_PASSWORD=secret123!'
@@ -8,17 +8,6 @@ services:
       - 5432:5432
     volumes:
       - /var/data/postgres:/var/lib/postgres/data
-    networks:
-      - postgres
-
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-      PGADMIN_DEFAULT_PASSWORD: secret123!
-    ports:
-      - 5050:80
     networks:
       - postgres
 

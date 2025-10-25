@@ -1,22 +1,97 @@
 apiVersion: apps/v1
 kind: ReplicaSet
 metadata:
-  name: vsftpd-rs
+  name: vsftpd-pub-rs
   namespace: mosson
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: vsftpd
+      app: vsftpd-pub
   template:
     metadata:
-      name: vsftpd
+      name: vsftpd-pub
       labels:
-        app: vsftpd
+        app: vsftpd-pub
       namespace: mosson
     spec:
+      volumes:
+        - name: home
+          hostPath:
+            path: /app/vsftpd
       containers:
-        - name: vsftpd
+        - name: vsftpd-pub
+          image: 192.168.50.149:5000/vsftpd
+          ports:
+            - name: ftp-transfer
+              protocol: TCP
+              containerPort: 20
+            - name: ftp
+              protocol: TCP
+              containerPort: 21
+            - name: sftp
+              protocol: TCP
+              containerPort: 22
+            - name: pasv-4559
+              protocol: TCP
+              containerPort: 4565
+            - name: pasv-4560
+              protocol: TCP
+              containerPort: 4566
+            - name: pasv-4561
+              protocol: TCP
+              containerPort: 4567
+            - name: pasv-4562
+              protocol: TCP
+              containerPort: 4568
+            - name: pasv-4563
+              protocol: TCP
+              containerPort: 4569
+            - name: pasv-4564
+              protocol: TCP
+              containerPort: 4570
+          env:
+            - name: PASV_PROMISCUOUS
+              value: 'false'
+            - name: PASV_MIN_PORT
+              value: '4565'
+            - name: PASV_MAX_PORT
+              value: '4570'
+            - name: USESSL
+              value: 'false'
+            - name: FORCESSL
+              value: 'false'
+            - name: FTP_SERVER_NAME
+              value: 'My ftp data server'
+          volumeMounts:
+            - mountPath: /home
+              name: home
+
+---
+
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: vsftpd-pri-rs
+  namespace: mosson
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vsftpd-pri
+  template:
+    metadata:
+      name: vsftpd-pri
+      labels:
+        app: vsftpd-pri
+      namespace: mosson
+    spec:
+      volumes:
+        - name: home
+          hostPath:
+            path: /app/vsftpd
+      containers:
+        - name: vsftpd-pri
           image: 192.168.50.149:5000/vsftpd
           ports:
             - name: ftp-transfer
@@ -61,3 +136,7 @@ spec:
               value: 'false'
             - name: FTP_SERVER_NAME
               value: 'My ftp data server'
+          volumeMounts:
+            - mountPath: /home
+              name: home
+

@@ -5,7 +5,7 @@ RUN apt-get install wget -y
 
 WORKDIR /var/activemq
 
-RUN wget -O artemis.tar.gz https://dlcdn.apache.org/activemq/activemq-artemis/2.41.0/apache-artemis-2.41.0-bin.tar.gz
+RUN wget -O artemis.tar.gz https://dlcdn.apache.org/activemq/activemq-artemis/2.43.0/apache-artemis-2.43.0-bin.tar.gz
 RUN tar -xf artemis.tar.gz
 RUN rm artemis.tar.gz
 RUN mv ./* activemq-ar

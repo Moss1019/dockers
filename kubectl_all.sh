@@ -8,11 +8,8 @@ do
     cd "$d"
     if [ -d "./_k8s" ]; then
         cd _k8s
-        if [ -f "./service.yaml" ]; then
-            kubectl apply -f "service.yaml"
-        fi
-        if [ -f "replica-set.yaml" ]; then
-            kubectl apply -f ""replica-set.yaml""
+        if [ -f "./kubectl.sh" ]; then
+            ./kubectl.sh
         fi
     fi
     cd "$current_dir"

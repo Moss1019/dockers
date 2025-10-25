@@ -77,7 +77,7 @@ if [ "$1" = "vsftpd" ]; then
 	fi
 
 	if [ -z "$PASV_ADDRESS" ]; then
-		PASV_ADDRESS="$(tail -n 1 /etc/hosts | awk '{print $1}')"
+		PASV_ADDRESS="$VSFTPD_SVC_SERVICE_HOST"
 		export PASV_ADDRESS
 	fi
 
@@ -105,6 +105,16 @@ if [ "$1" = "vsftpd" ]; then
 		export FORCESSL="false"
 	fi
 
+	if [ ! -d /home/ftpuser ]; then
+		mkdir -p /home/ftpuser
+		chown ftpuser:ftpuser /home/ftpuser
+	fi
+
+	if [ ! -d /home/seller01 ]; then
+		mkdir -p /home/seller01
+		chown seller01:seller01 /home/seller01
+	fi
+
 	# Neccesary directories creation
 	mkdir -vp "$LOGDIR" "$PIDDIR" "$SECURECHROOTDIR"
 
@@ -118,10 +128,6 @@ if [ "$1" = "vsftpd" ]; then
 
 	# SSL/TLS configuration
 	ssl_tls_configuration
-
-	# VSFTPd standard log container redirection
-	tail -f "${LOGDIR}"/vsftpd.log | tee /dev/stdout &
-	tail -f "${LOGDIR}"/xferlog.log | tee /dev/stdout &
 
 cat << EOB
 

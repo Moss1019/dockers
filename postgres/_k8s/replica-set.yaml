@@ -15,6 +15,10 @@ spec:
         app: postgres
       namespace: mosson
     spec:
+      volumes:
+        - name: data
+          hostPath:
+            path: /app/postgres
       containers:
         - name: postgres
           image: 192.168.50.149:5000/postgres
@@ -25,3 +29,6 @@ spec:
           env:
             - name: POSTGRES_PASSWORD
               value: 'secret123!'
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: data

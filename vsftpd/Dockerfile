@@ -12,9 +12,9 @@ COPY container_key.pub /home/root/.ssh/authorized_keys/
 RUN useradd -m -s /bin/bash ftpuser
 RUN echo "ftpuser:password" | chpasswd
 
-RUN chmod +x /var/tmp/entrypoint.sh
+RUN useradd -m -s /bin/bash seller01
+RUN echo "seller01:seller01" | chpasswd
 
-EXPOSE 20/tcp 21/tcp 22/tcp
-EXPOSE 4559/tcp 4560/tcp 4561/tcp 4562/tcp 4563/tcp 4564/tcp
+RUN chmod +x /var/tmp/entrypoint.sh
 
 ENTRYPOINT service ssh start && /var/tmp/entrypoint.sh vsftpd

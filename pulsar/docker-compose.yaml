@@ -1,0 +1,15 @@
+services:
+  pulsar:
+    image: apachepulsar/pulsar-standalone
+    container_name: pulsar
+    ports:
+    - "6650:6650"
+    - "8080:8080"
+    networks:
+    - pulsar
+
+networks:
+  pulsar:
+    name: pulsar
+    driver: bridge
+  

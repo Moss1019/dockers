@@ -1,0 +1,23 @@
+services:
+  dekaf:
+    image: visortelle/dekaf:1.1.0
+    environment:
+      DEKAF_PULSAR_WEB_URL: "http://pulsar:8080"
+      DEKAF_PULSAR_BROKER_URL: "pulsar://pulsar:6650"
+      # In case you're unable to observe the UI on the http://localhost:8090, probably your localhost resolves to IPv6 ::1 address. 
+      # Try to uncomment the line below and open http://127.0.0.1:8090 in your browser.
+      # DEKAF_PUBLIC_BASE_URL: "http://127.0.0.1:8090"
+    # volumes:
+    #   - dekaf-library:/dekaf/data/library
+    ports:
+      - "8090:8090"
+    networks:
+      - pulsar
+
+networks:
+  pulsar:
+    external: true
+  
+
+
+

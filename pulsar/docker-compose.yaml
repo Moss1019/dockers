@@ -1,15 +1,121 @@
+# compose files based on https://pulsar.apache.org/docs/next/getting-started-docker-compose/
+
 services:
-  pulsar:
-    image: apachepulsar/pulsar-standalone
-    container_name: pulsar
-    ports:
-    - "6650:6650"
-    - "8080:8080"
+  zookeeper:
+    image: apachepulsar/pulsar:latest
+    user: root
+    container_name: zookeeper
     networks:
-    - pulsar
+      - pulsar
+    volumes:
+      - zk_data:/pulsar/data/zookeeper
+    environment:
+      - metadataStoreUrl=zk:zookeeper:2181
+      - PULSAR_MEM=-Xms256m -Xmx256m -XX:MaxDirectMemorySize=256m
+    command:
+      - bash
+      - -c
+      - |
+        bin/apply-config-from-env.py conf/zookeeper.conf && \
+        bin/generate-zookeeper-config.sh conf/zookeeper.conf && \
+        exec bin/pulsar zookeeper
+    healthcheck:
+      test: ["CMD", "bin/pulsar-zookeeper-ruok.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  # Init cluster metadata
+  pulsar-init:
+    image: apachepulsar/pulsar:latest
+    user: root
+    container_name: pulsar-init
+    hostname: pulsar-init
+    networks:
+      - pulsar
+    command:
+      - bash
+      - -c
+      - |
+        bin/pulsar initialize-cluster-metadata \
+        --cluster standalone \
+        --zookeeper zookeeper:2181 \
+        --configuration-store zookeeper:2181 \
+        --web-service-url http://broker:8080 \
+        --broker-service-url pulsar://broker:6650
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+
+  bookie:
+    image: apachepulsar/pulsar:latest
+    user: root
+    container_name: bookie
+    networks:
+      - pulsar
+    environment:
+      - clusterName=standalone
+      - zkServers=zookeeper:2181
+      - metadataServiceUri=metadata-store:zk:zookeeper:2181
+      # otherwise every time we run docker compose up or down we fail to start due to Cookie
+      # See: https://github.com/apache/bookkeeper/blob/405e72acf42bb1104296447ea8840d805094c787/bookkeeper-server/src/main/java/org/apache/bookkeeper/bookie/Cookie.java#L57-68
+      - advertisedAddress=bookie
+      - BOOKIE_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      pulsar-init:
+        condition: service_completed_successfully
+    volumes:
+      - bk_data:/pulsar/data/bookkeeper
+    command: bash -c "bin/apply-config-from-env.py conf/bookkeeper.conf && exec bin/pulsar bookie"
+
+  broker:
+    image: apachepulsar/pulsar:latest
+    container_name: broker
+    hostname: broker
+    networks:
+      - pulsar
+    environment:
+      - metadataStoreUrl=zk:zookeeper:2181
+      - zookeeperServers=zookeeper:2181
+      - clusterName=standalone
+      - managedLedgerDefaultEnsembleSize=1
+      - managedLedgerDefaultWriteQuorum=1
+      - managedLedgerDefaultAckQuorum=1
+      - advertisedAddress=broker
+      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - PULSAR_MEM=-Xms512m -Xmx512m -XX:MaxDirectMemorySize=256m
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+      bookie:
+        condition: service_started
+    ports:
+      - "6650:6650"
+      - "8080:8080"
+    command: bash -c "bin/apply-config-from-env.py conf/broker.conf && exec bin/pulsar broker"
+
+  dekaf:
+    image: visortelle/dekaf:1.1.0
+    container_name: dekaf
+    network_mode: "host"
+    environment:
+      DEKAF_PULSAR_WEB_URL: "http://localhost:8080"
+      DEKAF_PULSAR_BROKER_URL: "pulsar://localhost:6650"
+    volumes:
+      - dekaf-library:/dekaf/data/library
+    depends_on:
+      broker:
+        condition: service_started
+    ports:
+      - "8090:8090"
 
 networks:
   pulsar:
-    name: pulsar
     driver: bridge
-  
+
+volumes:
+  zk_data:
+  bk_data:
+  dekaf-library:
